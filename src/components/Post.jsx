@@ -21,7 +21,7 @@ export function Post({ author, publishedAt, content }) {
     addSuffix: true,
   })
 
-  function handleCreateNewComment(event) { 
+  function handleCreateNewComment(event) {
     event.preventDefault()
 
     setComments([...comments, newCommentText])
@@ -31,7 +31,11 @@ export function Post({ author, publishedAt, content }) {
   function handleNewCommentChange(event) {
     setNewCommentText(event.target.value)
   }
-  
+
+  function deleteComment(comment) {
+    console.log(`Deletar comentário ${comment}`)
+  }
+
   return (
     <article className={styles.post}>
       <header>
@@ -48,8 +52,8 @@ export function Post({ author, publishedAt, content }) {
 
       <div className={styles.content}>
         {content.map((item) => {
-          if (item.type === 'paragraph') return <p>{item.content}</p>
-          if (item.type === 'link') return <p><a href="">{item.content}</a></p>
+          if (item.type === 'paragraph') return <p key={item.content}>{item.content}</p>
+          if (item.type === 'link') return <p key={item.content}><a href="">{item.content}</a></p>
         })}
       </div>
 
@@ -68,7 +72,12 @@ export function Post({ author, publishedAt, content }) {
       </form>
 
       <div className={styles.commentList}>
-        {comments.map((comment) => <Comment content={comment} />)}
+        {comments.map((comment) => 
+        <Comment 
+          key={comment} 
+          content={comment} 
+          onDeleteComment={deleteComment} 
+        />)}
       </div>
     </article>
   )
